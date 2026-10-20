@@ -1,0 +1,271 @@
+{
+  "version": 1,
+  "meta": {
+    "lastScanned": "2026-10-20T08:43:07.211Z",
+    "fileCount": 28,
+    "hits": 0,
+    "misses": 0,
+    "renderedHash": "02803c7a969fde445a5273c442dfd744ee87eaae42e1d18d487c43a9cf0ee902",
+    "storeUpdatedAt": "2026-10-20T08:43:07.216Z",
+    "rootHash": "7c6b44f59b863bbe"
+  },
+  "files": {
+    "AGENTS.md": {
+      "description": "OpenWolf",
+      "tokens": 75,
+      "hash": "e401f79554a8d796",
+      "size": 297,
+      "mtimeMs": 1792474586331.5247,
+      "updatedAt": "2026-10-20T05:36:26.339Z",
+      "source": "scan"
+    },
+    "CLAUDE.md": {
+      "description": "OpenWolf",
+      "tokens": 99,
+      "hash": "074d6b42b583729a",
+      "size": 395,
+      "mtimeMs": 1792474586325.9893,
+      "updatedAt": "2026-10-20T05:36:26.339Z",
+      "source": "scan"
+    },
+    "openspec/changes/archive/.gitkeep": {
+      "description": "",
+      "tokens": 0,
+      "hash": "e3b0c44298fc1c14",
+      "size": 0,
+      "mtimeMs": 1792474581931.5352,
+      "updatedAt": "2026-10-20T05:36:26.339Z",
+      "source": "scan"
+    },
+    "openspec/config.yaml": {
+      "description": "",
+      "tokens": 286,
+      "hash": "f0082e9c22e8ce1d",
+      "size": 998,
+      "mtimeMs": 1792474581939.2083,
+      "updatedAt": "2026-10-20T05:36:26.339Z",
+      "source": "scan"
+    },
+    "openspec/specs/.gitkeep": {
+      "description": "",
+      "tokens": 0,
+      "hash": "e3b0c44298fc1c14",
+      "size": 0,
+      "mtimeMs": 1792474581931.5352,
+      "updatedAt": "2026-10-20T05:36:26.339Z",
+      "source": "scan"
+    },
+    "paging-package-brief.md": {
+      "description": "Paging Package Brief",
+      "tokens": 33492,
+      "hash": "3740c57326edc756",
+      "size": 134141,
+      "mtimeMs": 1792469562739.6394,
+      "updatedAt": "2026-10-20T05:36:26.340Z",
+      "source": "scan"
+    },
+    "README.md": {
+      "description": "Project documentation",
+      "tokens": 3279,
+      "hash": "eebbd88ce3fa855f",
+      "size": 13114,
+      "mtimeMs": 1792484557861.3462,
+      "updatedAt": "2026-10-20T08:22:38.030Z",
+      "source": "hook"
+    },
+    "Zooper.Ant.Example/Players.cs": {
+      "description": "What the API returns: pages are mapped from <see cref=\"Player\"/> with <see cref=\"Page{TItem}.Map{TOu",
+      "tokens": 975,
+      "hash": "b4d7ab5bc663fc53",
+      "size": 3656,
+      "mtimeMs": 1792483853603.7456,
+      "updatedAt": "2026-10-20T08:10:53.650Z",
+      "source": "hook"
+    },
+    "Zooper.Ant.Tests/PagerTests.cs": {
+      "description": "Verifies the kind switch of <see cref=\"Pager.ReadAsync{TItem}\"/> against a mocked <see cref=\"IPageSo",
+      "tokens": 3037,
+      "hash": "1316802e5c0e4397",
+      "size": 11387,
+      "mtimeMs": 1792484454754.7158,
+      "updatedAt": "2026-10-20T08:20:54.808Z",
+      "source": "hook"
+    },
+    "Zooper.Ant.Tests/TraverseAsyncTests.cs": {
+      "description": "Verifies <see cref=\"Pager.TraverseAsync{TItem}\"/> against a scripted page read: it follows tokens to",
+      "tokens": 1679,
+      "hash": "1f2f88689b7baeaa",
+      "size": 6293,
+      "mtimeMs": 1792484481883.5574,
+      "updatedAt": "2026-10-20T08:21:21.935Z",
+      "source": "hook"
+    },
+    "Zooper.Ant.Tests/PageSourceContractShapeTests.cs": {
+      "description": "Verifies that <see cref=\"IPageSource{TItem}\"/> is a plain interface any store can implement, here by",
+      "tokens": 313,
+      "hash": "11b0755636c4ac6d",
+      "size": 1173,
+      "mtimeMs": 1792484482004.5571,
+      "updatedAt": "2026-10-20T08:21:22.053Z",
+      "source": "hook"
+    },
+    "Zooper.Ant.Tests/OrderTests.cs": {
+      "description": "Verifies how an <see cref=\"Order{T}\"/> chain is declared and described (spec <c>keyset-ordering</c>)",
+      "tokens": 959,
+      "hash": "4be59738c4e0b16f",
+      "size": 3594,
+      "mtimeMs": 1792484496635.516,
+      "updatedAt": "2026-10-20T08:21:36.692Z",
+      "source": "hook"
+    },
+    "Zooper.Ant.Tests/SeekExpressionBuilderTests.cs": {
+      "description": "Verifies the LINQ order-and-seek builder that every LINQ store receives (spec <c>keyset-ordering</c>",
+      "tokens": 3798,
+      "hash": "524ea925c70a0f3f",
+      "size": 14240,
+      "mtimeMs": 1792484547470.8787,
+      "updatedAt": "2026-10-20T08:22:27.529Z",
+      "source": "hook"
+    },
+    "Zooper.Ant.Tests/QueryablePageSourceTests.cs": {
+      "description": "Verifies that <see cref=\"QueryablePageSource{T}\"/> builds the ordered, filtered and sought query its",
+      "tokens": 1192,
+      "hash": "e8b73dd385bd5b56",
+      "size": 4467,
+      "mtimeMs": 1792484566290.323,
+      "updatedAt": "2026-10-20T08:22:46.346Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Sources/Order.cs": {
+      "description": "The order of a LINQ read, declared once as a chain of typed keys ending in a unique tie-breaker. Bot",
+      "tokens": 3839,
+      "hash": "475776cb11b84464",
+      "size": 14398,
+      "mtimeMs": 1792485648200.2627,
+      "updatedAt": "2026-10-20T08:40:48.247Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Pager.cs": {
+      "description": "The single paging service of Zooper.Ant: serves every page kind from any <see cref=\"IPageSource{TIte",
+      "tokens": 3969,
+      "hash": "73b8eea83e988b3f",
+      "size": 14882,
+      "mtimeMs": 1792485649539.0425,
+      "updatedAt": "2026-10-20T08:40:49.591Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/PageScope.cs": {
+      "description": "What a continuation token is bound to: the read that issues it and the values that define its result",
+      "tokens": 1576,
+      "hash": "e5389c5d01aebded",
+      "size": 5910,
+      "mtimeMs": 1792485678356.5034,
+      "updatedAt": "2026-10-20T08:41:18.409Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/CanonicalJson.cs": {
+      "description": "The one set of JSON options for scope fingerprints and token payloads. Pinned explicitly rather than",
+      "tokens": 646,
+      "hash": "a93c2e45415d1b34",
+      "size": 2420,
+      "mtimeMs": 1792485678484.0432,
+      "updatedAt": "2026-10-20T08:41:18.533Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Tokens/IPageTokenProtector.cs": {
+      "description": "Protects a page position as an opaque <see cref=\"PageToken\"/>, and opens it again only for the same ",
+      "tokens": 964,
+      "hash": "370e525647602873",
+      "size": 3612,
+      "mtimeMs": 1792485717653.59,
+      "updatedAt": "2026-10-20T08:41:57.710Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Tokens/DataProtectionPageTokenProtector.cs": {
+      "description": "The default <see cref=\"IPageTokenProtector\"/>: ASP.NET Core Data Protection encrypts and integrity-p",
+      "tokens": 1739,
+      "hash": "9d8d85ea7185f782",
+      "size": 6519,
+      "mtimeMs": 1792485717794.1018,
+      "updatedAt": "2026-10-20T08:41:57.843Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Sources/SeekExpressionBuilder.cs": {
+      "description": "Turns an <see cref=\"Order{T}\"/> into LINQ expressions: the ORDER BY of a page and the keyset seek pr",
+      "tokens": 5717,
+      "hash": "deec671e2ccfb674",
+      "size": 21445,
+      "mtimeMs": 1792485722158.0957,
+      "updatedAt": "2026-10-20T08:42:02.215Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/DependencyInjection/AntOptions.cs": {
+      "description": "Host configuration of Zooper.Ant, set through <see cref=\"ServiceCollectionExtensions.AddAnt\"/>.",
+      "tokens": 525,
+      "hash": "2397985fe0ddbb65",
+      "size": 1966,
+      "mtimeMs": 1792485747144.8892,
+      "updatedAt": "2026-10-20T08:42:27.202Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/DependencyInjection/ServiceCollectionExtensions.cs": {
+      "description": "Registers Zooper.Ant in an <see cref=\"IServiceCollection\"/>.",
+      "tokens": 1093,
+      "hash": "f7d35ba0ab1edab5",
+      "size": 4096,
+      "mtimeMs": 1792485747271.8887,
+      "updatedAt": "2026-10-20T08:42:27.316Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Sources/PagePosition.cs": {
+      "description": "Where a page ended, as an ordered list of JSON-serialisable values the source defines and reads back",
+      "tokens": 532,
+      "hash": "4720b36392713f2b",
+      "size": 1992,
+      "mtimeMs": 1792485747387.8884,
+      "updatedAt": "2026-10-20T08:42:27.441Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Sources/IPageSource.cs": {
+      "description": "The floor a store implements to be paged: one ordered, filtered result set. <see cref=\"Pager\"/> buil",
+      "tokens": 1974,
+      "hash": "8ac9772efbe74bdb",
+      "size": 7402,
+      "mtimeMs": 1792485775167.8223,
+      "updatedAt": "2026-10-20T08:42:55.219Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Sources/IQueryExecutor.cs": {
+      "description": "How a LINQ provider runs a query: to a list and to a count. This is the only thing a LINQ store adap",
+      "tokens": 1321,
+      "hash": "949b508314727d20",
+      "size": 4953,
+      "mtimeMs": 1792485786929.2954,
+      "updatedAt": "2026-10-20T08:43:06.984Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Sources/QueryablePageSource.cs": {
+      "description": "The page source of any LINQ provider: orders and seeks a query by an <see cref=\"Order{T}\"/> and runs",
+      "tokens": 1574,
+      "hash": "42a68732a4176852",
+      "size": 5906,
+      "mtimeMs": 1792485787051.794,
+      "updatedAt": "2026-10-20T08:43:07.095Z",
+      "source": "hook"
+    },
+    "Zooper.Ant/Sources/QueryableExtensions.cs": {
+      "description": "Pages items held in memory with one call at the end of a LINQ query, through the same order-and-seek",
+      "tokens": 1347,
+      "hash": "b353c7cb3e30a40d",
+      "size": 5049,
+      "mtimeMs": 1792485787163.7937,
+      "updatedAt": "2026-10-20T08:43:07.211Z",
+      "source": "hook"
+    }
+  },
+  "preamble": [
+    "> Project structure index. Auto-maintained by OpenWolf hooks and daemon.",
+    "> Run `openwolf scan` to generate, or wait for the first Claude Code session.",
+    "> Status: Pending initial scan"
+  ]
+}
