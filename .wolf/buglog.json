@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "bugs": [
+    {
+      "id": "bug-001",
+      "date": "2026-10-20",
+      "error_message": "Contract suite expected order would fail a correct store that keeps microsecond timestamps (sub-microsecond pair tied in the store, ordered by tie-breaker, but the oracle compared full ticks)",
+      "file": "Zooper.Ant.Tests/Contract/PageSourceContractTests.cs",
+      "root_cause": "ContractOrder.Sort compared CreatedAt at tick precision, i.e. the in-memory store's semantics, not the store under test.",
+      "fix": "IPageSourceFixture.TimestampPrecision (default 1 microsecond); the oracle compares timestamps at it. In-memory fixture declares one tick. MyStoreContractTests (README skeleton) runs the suite over a microsecond store.",
+      "tags": [
+        "contract-suite",
+        "timestamps",
+        "oracle",
+        "precision"
+      ]
+    },
+    {
+      "id": "bug-002",
+      "date": "2026-10-20",
+      "error_message": "Testing with VSTest target is no longer supported by Microsoft.Testing.Platform on .NET 10 SDK",
+      "file": "global.json",
+      "root_cause": "xunit.v3 runs on Microsoft.Testing.Platform; .NET 10 dotnet test defaults to VSTest.",
+      "fix": "global.json test.runner = Microsoft.Testing.Platform; drop Microsoft.NET.Test.Sdk and xunit.runner.visualstudio from the test project.",
+      "tags": [
+        "xunit.v3",
+        "dotnet-test",
+        "net10",
+        "mtp"
+      ]
+    },
+    {
+      "error_message": "Wrong reference: PagingException should be BadHttpRequestException",
+      "file": "Zooper.Ant.Example/Players.cs",
+      "root_cause": "Used \"PagingException\" instead of \"BadHttpRequestException\"",
+      "fix": "Changed PagingException → BadHttpRequestException",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "cs"
+      ],
+      "status": "candidate",
+      "observed_worktree": "/mnt/data_hdd/Development/Projects/Zooper/Ant",
+      "id": "bug-003",
+      "timestamp": "2026-10-20T08:10:53.658Z",
+      "last_seen": "2026-10-20T08:10:53.658Z",
+      "occurrences": 1,
+      "related_bugs": []
+    }
+  ],
+  "applied_observations": {
+    "7ae0b328-e546-4b23-8348-703e7345488e": true
+  },
+  "next_id": 4
+}

@@ -1,0 +1,55 @@
+# The tour's reads over HTTP.
+# 1. Start the API:  dotnet run --project Zooper.Ant.Example -- --serve
+# 2. Send the requests in order from Visual Studio, Rider or VS Code (REST Client). Requests marked `# @name` remember
+#    their response, so later requests pick up the token themselves; there is nothing to copy.
+
+@host = http://localhost:5080
+
+### 1. First continuable page (the default kind): 3 players and a nextPageToken
+# @name page1
+GET {{host}}/players?size=3
+
+### 2. The next page: send the token back
+GET {{host}}/players?size=3&token={{page1.response.body.$.nextPageToken}}
+
+### 3. The size may change between pages...
+GET {{host}}/players?size=5&token={{page1.response.body.$.nextPageToken}}
+
+### 4. ...the filters may not: the same token for team=blue is refused (400 "Invalid page token")
+GET {{host}}/players?size=3&team=blue&token={{page1.response.body.$.nextPageToken}}
+
+### 5. Counted: page 2 of size 3, with the total count
+GET {{host}}/players?kind=counted&page=2&size=3
+
+### 6. Counted deeper than the limit of 30 rows: refused (400)
+GET {{host}}/players?kind=counted&page=11&size=3
+
+### 7. Capped: the top 3 of team red, and whether more matched
+GET {{host}}/players?kind=capped&cap=3&team=red
+
+### 8. An argument of another kind is refused, not ignored (400)
+GET {{host}}/players?kind=capped&cap=3&page=2
+
+### 9. A size above the maximum of 10 is clamped and served
+GET {{host}}/players?size=500
+
+### 10. Another order, reversed: Name descending
+GET {{host}}/players?sort=Name&reverse=true&size=4
+
+### 11. A filter that cannot match: an empty counted page, nothing read
+GET {{host}}/players?kind=counted&minRating=101
+
+### 12. Live data: add a player, then repeat request 2; Zoe (85) now appears on page 2
+POST {{host}}/players
+Content-Type: application/json
+
+{ "name": "Zoe", "team": "red", "rating": 85 }
+
+### 13. Everyone, streamed by following the tokens
+GET {{host}}/players/export
+
+### 14. A store with its own cursors: continuable works
+GET {{host}}/activity?size=3
+
+### 15. ...counted does not: the store cannot count (400)
+GET {{host}}/activity?kind=counted
