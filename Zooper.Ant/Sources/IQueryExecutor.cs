@@ -11,7 +11,7 @@ namespace Zooper.Ant.Sources;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <b>Why only two methods.</b> <see cref="QueryablePageSource{T}"/> builds every query a page needs (the ordered range,
+/// Why only two methods. <see cref="QueryablePageSource{T}"/> builds every query a page needs (the ordered range,
 /// the seek after a bookmark, the count) as a plain <see cref="IQueryable{T}"/> expression through
 /// <see cref="SeekExpressionBuilder"/>. What differs between providers is only how such a query is executed
 /// asynchronously: EF Core has <c>ToListAsync</c>/<c>CountAsync</c> in <c>Microsoft.EntityFrameworkCore</c>, Marten
@@ -20,7 +20,7 @@ namespace Zooper.Ant.Sources;
 /// queryable stores need only an executor").
 /// </para>
 /// <para>
-/// <b>Who sees it.</b> Adapter packages implement it and hide it behind their own <c>ToPageAsync</c> overload, so the
+/// Who sees it. Adapter packages implement it and hide it behind their own <c>ToPageAsync</c> overload, so the
 /// consumer selects a store by importing its namespace and never names the executor. Implement it yourself only to
 /// page a LINQ provider Zooper.Ant does not ship an adapter for.
 /// </para>

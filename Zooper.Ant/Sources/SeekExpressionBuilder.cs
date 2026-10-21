@@ -13,23 +13,23 @@ namespace Zooper.Ant.Sources;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <b>Role.</b> This is the engine behind <see cref="QueryablePageSource{T}"/> and therefore behind every LINQ store:
+/// Role. This is the engine behind <see cref="QueryablePageSource{T}"/> and therefore behind every LINQ store:
 /// in-memory today, EF Core and Marten through their adapters later. The in-memory source runs exactly the same
 /// expressions through LINQ-to-objects, so the package's in-memory tests exercise the expressions a database provider
 /// will receive (design decision 8, spec <c>page-sources</c>, "The in-memory source is the reference
 /// implementation").
 /// </para>
 /// <para>
-/// <b>Ordering.</b> <see cref="ApplyOrdering{T}"/> emits one <c>OrderBy</c>/<c>ThenBy</c> per key, in chain order.
-/// Before every nullable key it emits a <i>null-rank</i> key, <c>x =&gt; x.Key == null ? 1 : 0</c> (or <c>0 : 1</c>
+/// Ordering. <see cref="ApplyOrdering{T}"/> emits one <c>OrderBy</c>/<c>ThenBy</c> per key, in chain order.
+/// Before every nullable key it emits a null-rank key, <c>x =&gt; x.Key == null ? 1 : 0</c> (or <c>0 : 1</c>
 /// for nulls first), sorted ascending. LINQ has no "NULLS LAST" operator and databases disagree on where nulls sort by
 /// default (PostgreSQL puts them last ascending, SQL Server first), so ranking them explicitly is the portable way to
 /// place them. It translates in LINQ-to-objects and EF Core, and it is the idiom EF Core and Marten users are pointed
 /// to. Because the rank is always ascending, nulls stay last (or first) whatever the key's own direction.
 /// </para>
 /// <para>
-/// <b>Seek.</b> <see cref="BuildSeek{T}"/> emits the expanded keyset predicate. For keys k<sub>0</sub>…k<sub>n</sub>
-/// and bookmark values v<sub>0</sub>…v<sub>n</sub> a row is after the bookmark when
+/// Seek. <see cref="BuildSeek{T}"/> emits the expanded keyset predicate. For keys <c>k_0</c>…<c>k_n</c>
+/// and bookmark values <c>v_0</c>…<c>v_n</c> a row is after the bookmark when
 /// <c>OR over i of ( AND over j &lt; i of k_j == v_j ) AND beyond(k_i, v_i)</c>: its first key is beyond the
 /// bookmark's, or the first is equal and the second is beyond, and so on through the tie-breaker. "Beyond" honours
 /// each key's direction (<c>&gt;</c> ascending, <c>&lt;</c> descending) and its nulls placement. The expanded form is
@@ -37,14 +37,14 @@ namespace Zooper.Ant.Sources;
 /// or null placement, and LINQ cannot express them at all.
 /// </para>
 /// <para>
-/// <b>Translatable shapes only.</b> Comparisons use the type's operators where they exist (numbers,
+/// Translatable shapes only. Comparisons use the type's operators where they exist (numbers,
 /// <see cref="DateTime"/>, <see cref="DateTimeOffset"/>, <see cref="TimeSpan"/>, enums through their underlying type),
 /// <see cref="string.Compare(string, string)"/> for strings, and <see cref="IComparable{T}.CompareTo"/> for the rest
 /// (<see cref="Guid"/>, <see cref="bool"/>). EF Core translates all of these for the types it maps. A general
 /// <see cref="Comparer{T}.Default"/> call was rejected because EF Core does not translate it (design decision 8).
 /// </para>
 /// <para>
-/// <b>Parameters, not literals.</b> Each bookmark value is emitted as <c>box.Value</c>, a property read on a constant
+/// Parameters, not literals. Each bookmark value is emitted as <c>box.Value</c>, a property read on a constant
 /// <c>Box&lt;TKey&gt;</c>, instead of an <see cref="Expression.Constant(object)"/> of the value itself. LINQ providers
 /// treat a member access on a closure-like constant as a query parameter, the same way they treat a captured local in
 /// <c>Where(x =&gt; x.Id &gt; lastId)</c>. EF Core therefore compiles one SQL plan per order shape and reuses it for
@@ -52,7 +52,7 @@ namespace Zooper.Ant.Sources;
 /// inlines the value anyway still gives the right rows, only with a less effective plan cache.
 /// </para>
 /// <para>
-/// <b>Positions.</b> A position is the list of the chain's key values for one row, tie-breaker last. It travels inside
+/// Positions. A position is the list of the chain's key values for one row, tie-breaker last. It travels inside
 /// the encrypted token as JSON, so <see cref="PositionOf{T}"/> normalises timestamps before they leave, and
 /// <see cref="ParsePosition{T}"/> checks the shape when they return. Both are used by
 /// <see cref="QueryablePageSource{T}"/>, never called by <see cref="Pager"/> directly.
@@ -181,15 +181,15 @@ internal static class SeekExpressionBuilder
 	/// <returns>One value per key, in chain order, ready to be serialised into the token.</returns>
 	/// <remarks>
 	/// <para>
-	/// <b>Truncation.</b> A <see cref="DateTime"/> in memory has 100-nanosecond ticks, but PostgreSQL and most stores
+	/// Truncation. A <see cref="DateTime"/> in memory has 100-nanosecond ticks, but PostgreSQL and most stores
 	/// keep microseconds. A row read back from the store already carries the truncated value; one built in memory and
 	/// then saved may not. If the bookmark kept the finer value, the stored row (equal to the truncated value) would
-	/// compare as <i>before</i> its own bookmark and the rows sharing that microsecond would be skipped or repeated. The
+	/// compare as before its own bookmark and the rows sharing that microsecond would be skipped or repeated. The
 	/// bookmark is therefore truncated to the store's precision, so it is equal to the stored value (spec
 	/// <c>keyset-ordering</c>, "A timestamp bookmark is truncated to the store's precision").
 	/// </para>
 	/// <para>
-	/// <b>UTC.</b> An unspecified-kind <see cref="DateTime"/> is marked UTC with its ticks unchanged, so it serialises
+	/// UTC. An unspecified-kind <see cref="DateTime"/> is marked UTC with its ticks unchanged, so it serialises
 	/// with a <c>Z</c> and reads back as the same instant; values are compared by ticks, so marking moves nothing. A
 	/// local-kind value is kept as is. A <see cref="DateTimeOffset"/> is converted to offset zero, which keeps the instant
 	/// and gives one canonical form.

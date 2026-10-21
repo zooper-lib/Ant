@@ -1,4 +1,5 @@
 using Zooper.Ant;
+using Zooper.Ant.AspNetCore.DependencyInjection;
 using Zooper.Ant.DependencyInjection;
 using Zooper.Ant.Example;
 
@@ -43,10 +44,13 @@ builder.Services.AddSingleton<PlayerQueries>();
 builder.Services.AddSingleton<ActivityLog>();
 builder.Services.AddSingleton<Tour>();
 
-// Every paging refusal (PagingException, including InvalidPageTokenException) becomes a 400 problem response. Only the
-// HTTP mode uses this; the tour catches the exceptions itself to print them.
-builder.Services.AddProblemDetails();
-builder.Services.AddExceptionHandler<PagingExceptionHandler>();
+// Zooper.Ant.AspNetCore, two independent one-liners (the query binding itself needs no registration):
+//   - every paging refusal (PagingException, including InvalidPageTokenException) becomes a 400 problem response whose
+//     type is urn:zooper:ant:invalid-paging or urn:zooper:ant:invalid-page-token. Only the HTTP mode uses this; the
+//     tour catches the exceptions itself to print them;
+//   - the OpenAPI document describes a Page<T> response as oneOf the three page shapes and lists the paging values.
+builder.Services.AddAntExceptionHandler();
+builder.Services.AddOpenApi(options => options.AddAntPageResponses());
 
 // The tour writes to the console, so host logging stays quiet unless the HTTP API is running.
 builder.Logging.SetMinimumLevel(serve ? LogLevel.Information : LogLevel.Warning);
@@ -60,7 +64,9 @@ if (!serve)
 	return;
 }
 
-// HTTP mode: route exceptions to PagingExceptionHandler, map the endpoints and listen on the URL from appsettings.json.
+// HTTP mode: route exceptions to the paging handler, serve /openapi/v1.json, map the endpoints and listen on the URL
+// from appsettings.json.
 app.UseExceptionHandler();
+app.MapOpenApi();
 app.MapPlayerApi();
 app.Run();

@@ -23,6 +23,7 @@ budget_tokens: 2000
 - [2026-10-20] Shipped a separate `Zooper.Ant.Testing` contract-suite package. Daniel never wanted it: adapter authors test their own adapters. Do not ship test packages; test helpers stay inside `Zooper.Ant.Tests`.
 - [2026-10-20] Built `ReadmeSnippets.cs` to make README code compile (with fake Dapr types). README code only has to showcase usage, it is never compiled or tested. Show features in `Zooper.Ant.Example` instead.
 - [2026-10-20] Shipped without an example project because tasks.md omitted it. Every Zooper library gets a runnable `Zooper.{Name}.Example` showing off all features; flag plan gaps like this instead of silently following the task list.
+- [2026-10-21] Used HTML tags (`<b>`, `<i>`, `<sub>`) in XML doc comments. Only C# doc tags are valid (`summary`, `remarks`, `para`, `c`, `code`, `see`, `list`, `item`, `term`, `description`, `example`, `param`, `returns`, `exception`, …). No bold lead-ins; write subscripts as `<c>k_0</c>`.
 
 ## Decision Log
 

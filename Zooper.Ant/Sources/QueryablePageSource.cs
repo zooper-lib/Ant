@@ -13,7 +13,7 @@ namespace Zooper.Ant.Sources;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <b>Role.</b> <see cref="Pager"/> serves every page kind from an <see cref="IPageSource{TItem}"/>. This class is that
+/// Role. <see cref="Pager"/> serves every page kind from an <see cref="IPageSource{TItem}"/>. This class is that
 /// source for everything LINQ can express. It turns each call of the floor contract into one query over the same
 /// filtered result set:
 /// </para>
@@ -28,11 +28,11 @@ namespace Zooper.Ant.Sources;
 /// the chain's key values of a row (<see cref="PositionOf"/>), read back typed from a token (<see cref="ParsePosition"/>).
 /// </para>
 /// <para>
-/// <b>One instance per read.</b> A source wraps one filtered query and one order. Create it per call; it holds no
+/// One instance per read. A source wraps one filtered query and one order. Create it per call; it holds no
 /// connection or state of its own beyond the query.
 /// </para>
 /// <para>
-/// <b>Timestamp precision.</b> A bookmark on a date or time key is truncated to the precision the store keeps, so it
+/// Timestamp precision. A bookmark on a date or time key is truncated to the precision the store keeps, so it
 /// equals the value the store holds (see <see cref="SeekExpressionBuilder.PositionOf{T}"/>). The default of one
 /// microsecond matches PostgreSQL and most stores. Pass the store's own precision when it differs. The in-memory entry
 /// point passes one tick: memory keeps every tick, and truncating there would put a row before its own bookmark, so

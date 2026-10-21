@@ -18,26 +18,26 @@ namespace Zooper.Ant;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <b>Why one service.</b> The kind switch (continuable, counted, capped), the issuing of tokens and the refusal of
+/// Why one service. The kind switch (continuable, counted, capped), the issuing of tokens and the refusal of
 /// foreign ones are implemented here once, over the small <see cref="IPageSource{TItem}"/> floor. A store implements
 /// that floor and gets every kind for free; it is never told which kind is being served and never handles a token.
 /// The LINQ entry point <see cref="QueryableExtensions"/> (<c>query.ToPageAsync(paging, order, scope, pager, ct)</c>)
 /// is a thin wrapper that builds a <see cref="QueryablePageSource{T}"/> and calls <see cref="ReadAsync{TItem}"/>.
 /// </para>
 /// <para>
-/// <b>Lifetime.</b> <c>services.AddAnt()</c> (<see cref="ServiceCollectionExtensions.AddAnt"/>) registers it as a
+/// Lifetime. <c>services.AddAnt()</c> (<see cref="ServiceCollectionExtensions.AddAnt"/>) registers it as a
 /// singleton. It holds no per-request state: the <see cref="IPageTokenProtector"/> it wraps and the
 /// <see cref="AntOptions"/> it reads are both singletons too. There is no interface over it on purpose: there is one
 /// implementation, and tests use the real <see cref="Pager"/> with a test protector.
 /// </para>
 /// <para>
-/// <b>Tokens.</b> For a continuable page the pager binds the caller's <see cref="PageScope"/> to the source's
+/// Tokens. For a continuable page the pager binds the caller's <see cref="PageScope"/> to the source's
 /// <see cref="IPageSource{TItem}.OrderSignature"/> (<see cref="PageScope.Bind"/>), so a token issued under one read,
 /// one set of filter values or one ordering is refused under any other. What a token carries is the source's own
 /// <see cref="PagePosition"/>; the pager protects and returns it but never interprets its values.
 /// </para>
 /// <para>
-/// <b>Limits.</b> Sizes are bounded where the <see cref="Paging"/> instruction is built, not here. Build instructions
+/// Limits. Sizes are bounded where the <see cref="Paging"/> instruction is built, not here. Build instructions
 /// from <see cref="Limits"/> so every caller in a host obeys the configured <see cref="PagingLimits"/>.
 /// </para>
 /// </remarks>
@@ -85,15 +85,15 @@ public sealed class Pager(IPageTokenProtector protector, IOptions<AntOptions> op
 	/// <para>The call pattern on the source depends on the kind, and is the whole cost of the read:</para>
 	/// <list type="bullet">
 	/// <item><description>
-	/// <b>Counted:</b> one <see cref="IPageSource{TItem}.CountAsync"/> and one
+	/// Counted: one <see cref="IPageSource{TItem}.CountAsync"/> and one
 	/// <see cref="IPageSource{TItem}.ReadAsync"/> at offset <c>(page - 1) × size</c>.
 	/// </description></item>
 	/// <item><description>
-	/// <b>Capped:</b> one <see cref="IPageSource{TItem}.ReadAsync"/> of <c>cap + 1</c> items from offset 0; the extra
+	/// Capped: one <see cref="IPageSource{TItem}.ReadAsync"/> of <c>cap + 1</c> items from offset 0; the extra
 	/// item only answers <see cref="CappedPage{TItem}.Truncated"/>.
 	/// </description></item>
 	/// <item><description>
-	/// <b>Continuable:</b> without a token, <see cref="IPageSource{TItem}.ReadAsync"/> of <c>size + 1</c> from offset 0;
+	/// Continuable: without a token, <see cref="IPageSource{TItem}.ReadAsync"/> of <c>size + 1</c> from offset 0;
 	/// with a token, the token is opened, the position parsed by the source, and
 	/// <see cref="IPageSource{TItem}.ReadAfterAsync"/> reads <c>size + 1</c> items strictly after it. The extra item
 	/// only answers whether a next token is issued; it is never served.

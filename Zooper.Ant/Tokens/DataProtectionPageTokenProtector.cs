@@ -16,7 +16,7 @@ namespace Zooper.Ant.Tokens;
 /// payload <c>{ v, q, p }</c> under the purpose <c>(PurposeRoot, readName)</c>, and the result is written as base64url.
 /// </summary>
 /// <remarks>
-/// <para><b>The payload.</b> Serialised with <see cref="CanonicalJson.Options"/> before encryption:</para>
+/// <para>The payload. Serialised with <see cref="CanonicalJson.Options"/> before encryption:</para>
 /// <list type="table">
 /// <listheader><term>Field</term><description>Meaning</description></listheader>
 /// <item><term><c>v</c></term><description>Payload version, always 1. Reserved for the direction flag of a future backwards-paging change; any other value is refused.</description></item>
@@ -24,19 +24,19 @@ namespace Zooper.Ant.Tokens;
 /// <item><term><c>p</c></term><description>The <see cref="PagePosition.Values"/> of the last served item; returned as JSON elements on open.</description></item>
 /// </list>
 /// <para>
-/// <b>The purpose chain.</b> Each read gets its own protector, <c>CreateProtector(PurposeRoot, readName)</c>. Data
+/// The purpose chain. Each read gets its own protector, <c>CreateProtector(PurposeRoot, readName)</c>. Data
 /// Protection derives a separate key per purpose, so a token of another read fails decryption before its fingerprint
 /// is even read. <see cref="AntOptions.PurposeRoot"/> defaults to <c>"Zooper.Ant.PageToken"</c>; changing it
 /// invalidates every token in flight.
 /// </para>
 /// <para>
-/// <b>One refusal.</b> Every failure (a base64 format error, a cryptographic failure, malformed JSON, a missing field,
+/// One refusal. Every failure (a base64 format error, a cryptographic failure, malformed JSON, a missing field,
 /// another version, another fingerprint) throws <see cref="InvalidPageTokenException"/> with the same fixed message,
 /// so a caller cannot probe which check failed. The original exception, when there is one, is kept as the inner
 /// exception for logs.
 /// </para>
 /// <para>
-/// <b>Keys.</b> The protector holds no secret; the keys live in the host's Data Protection key ring. Tokens have no
+/// Keys. The protector holds no secret; the keys live in the host's Data Protection key ring. Tokens have no
 /// lifetime (Data Protection's time-limited protector is deliberately not used), so a token stays valid until its key
 /// is removed from the ring. A host with several instances must share one key ring (<c>PersistKeysToFileSystem</c>, a
 /// database, Redis), otherwise a token issued by one instance is refused by another. <c>AddAnt</c> does not call

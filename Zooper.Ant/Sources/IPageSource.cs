@@ -11,25 +11,25 @@ namespace Zooper.Ant.Sources;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <b>One source, one result set.</b> A source is created per read call, over that call's filters and order. Every
+/// One source, one result set. A source is created per read call, over that call's filters and order. Every
 /// member refers to the same filtered set in the same total order: <see cref="CountAsync"/> counts it,
 /// <see cref="ReadAsync"/> reads a range of it, <see cref="ReadAfterAsync"/> continues it. The order must be total
 /// (end with a unique tie-breaker) or a continuation can skip or repeat items.
 /// </para>
 /// <para>
-/// <b>Which kinds call what.</b> Counted calls <see cref="CountAsync"/> and <see cref="ReadAsync"/> with an offset;
+/// Which kinds call what. Counted calls <see cref="CountAsync"/> and <see cref="ReadAsync"/> with an offset;
 /// capped calls <see cref="ReadAsync"/> from offset 0; continuable calls <see cref="ReadAsync"/> from offset 0 or
 /// <see cref="ReadAfterAsync"/>, then <see cref="PositionOf"/> and, for a returned token, <see cref="ParsePosition"/>.
 /// Limits ask for one item more than the page; the source just returns up to <c>limit</c> items.
 /// </para>
 /// <para>
-/// <b>Stores that cannot count or skip.</b> A native-cursor store (Elasticsearch <c>search_after</c>, Cosmos DB, Dapr
+/// Stores that cannot count or skip. A native-cursor store (Elasticsearch <c>search_after</c>, Cosmos DB, Dapr
 /// state queries) throws <see cref="System.NotSupportedException"/> from <see cref="CountAsync"/> and from
 /// <see cref="ReadAsync"/> when <c>offset &gt; 0</c>. <see cref="Pager"/> turns exactly that into a
 /// <see cref="PagingException"/> for the counted kind; continuable and capped pages are still served.
 /// </para>
 /// <para>
-/// <b>You may not need it.</b> A LINQ provider only implements <see cref="IQueryExecutor"/>;
+/// You may not need it. A LINQ provider only implements <see cref="IQueryExecutor"/>;
 /// <see cref="QueryablePageSource{T}"/> implements this interface from an <see cref="Order{T}"/>.
 /// </para>
 /// </remarks>

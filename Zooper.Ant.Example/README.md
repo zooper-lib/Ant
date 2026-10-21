@@ -35,11 +35,11 @@ The tour prints numbered chapters. Each chapter says what it shows, the call it 
 
 | File | Shows |
 | --- | --- |
-| `Program.cs` | `AddDataProtection`, `AddAnt` with limits and purpose root |
+| `Program.cs` | `AddDataProtection`, `AddAnt` with limits and purpose root; `AddAntExceptionHandler` and `AddOpenApi(o => o.AddAntPageResponses())` from Zooper.Ant.AspNetCore |
 | `Players.cs` | `PlayerQueries.ListAsync`: a LINQ query ending in `ToPageAsync`, the `Order<T>`, the `PageScope`, `Map`, `ToEmptyPage` |
 | `Activity.cs` | `ActivityLogPageSource`: paging a store that has its own cursors and cannot count |
 | `Tour.cs` | Every chapter, in reading order |
-| `Api.cs`, `PagingQuery.cs`, `PagingExceptionHandler.cs` | The same reads over HTTP: picking the kind from the query string, refusals as 400 problem responses |
+| `Api.cs` | The same reads over HTTP: `[AsParameters] PagingRequest` beside the filter, `paging.ToPaging(pager.Limits)` |
 
 ## Over HTTP
 
@@ -48,3 +48,15 @@ dotnet run --project Zooper.Ant.Example -- --serve
 ```
 
 Then send the requests in `Zooper.Ant.Example.http` in order. They carry the token from one request to the next themselves; nothing needs copying.
+
+The HTTP side uses Zooper.Ant.AspNetCore, so it speaks the five standard query parameters:
+
+| Parameter | Kinds |
+| --- | --- |
+| `paging` = `continuable` (default), `counted`, `capped` | all |
+| `pageToken` | continuable |
+| `page` | counted |
+| `size` | continuable, counted |
+| `cap` | capped |
+
+A refusal comes back as a 400 problem response: `type` `urn:zooper:ant:invalid-paging` for bad arguments (`?paging=capped&cap=3&page=2`, a page beyond the 30-row depth), `urn:zooper:ant:invalid-page-token` for a token from another read or filter. `GET /openapi/v1.json` shows `/players` answering `oneOf` the three page shapes.

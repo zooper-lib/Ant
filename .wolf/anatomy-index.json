@@ -1,13 +1,13 @@
 {
   "version": 1,
   "meta": {
-    "lastScanned": "2026-10-20T08:43:07.211Z",
-    "fileCount": 28,
+    "lastScanned": "2026-10-21T08:56:41.565Z",
+    "fileCount": 29,
     "hits": 0,
     "misses": 0,
-    "renderedHash": "02803c7a969fde445a5273c442dfd744ee87eaae42e1d18d487c43a9cf0ee902",
-    "storeUpdatedAt": "2026-10-20T08:43:07.216Z",
-    "rootHash": "7c6b44f59b863bbe"
+    "renderedHash": "83bac2a6a3378e917b97c1a957f8edcfb43be5f621299dd72f29f5fe22628bd0",
+    "storeUpdatedAt": "2026-10-21T08:56:41.570Z",
+    "rootHash": "ccdb95af70c0d41e"
   },
   "files": {
     "AGENTS.md": {
@@ -260,6 +260,15 @@
       "size": 5049,
       "mtimeMs": 1792485787163.7937,
       "updatedAt": "2026-10-20T08:43:07.211Z",
+      "source": "hook"
+    },
+    ".github/workflows/nuget.publish.yml": {
+      "description": "CI: Build and Publish",
+      "tokens": 938,
+      "hash": "f4bc10eac40f2d2f",
+      "size": 3281,
+      "mtimeMs": 1792573001507.2935,
+      "updatedAt": "2026-10-21T08:56:41.565Z",
       "source": "hook"
     }
   },

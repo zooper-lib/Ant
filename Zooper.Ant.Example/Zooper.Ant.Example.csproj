@@ -3,10 +3,15 @@
     <PropertyGroup>
         <IsPackable>false</IsPackable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <!-- Microsoft.AspNetCore.OpenApi's XML-comment generator reaches this project through the Zooper.Ant.AspNetCore
+             project reference, but the package's build targets that enable its interceptors do not. NuGet consumers get
+             neither, so only the in-repository projects need this. -->
+        <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.AspNetCore.OpenApi.Generated</InterceptorsNamespaces>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Zooper.Ant\Zooper.Ant.csproj" />
+        <ProjectReference Include="..\Zooper.Ant.AspNetCore\Zooper.Ant.AspNetCore.csproj" />
     </ItemGroup>
 
 </Project>

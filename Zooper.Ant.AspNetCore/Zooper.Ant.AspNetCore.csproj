@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IsPackable>true</IsPackable>
+        <Description>ASP.NET Core companion of Zooper.Ant: query binding for the five paging parameters, a 400 problem handler for paging refusals, and the OpenAPI description of Page&lt;T&gt; responses.</Description>
+        <PackageTags>$(PackageTags);aspnetcore;openapi</PackageTags>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Zooper.Ant\Zooper.Ant.csproj" />
+    </ItemGroup>
+
+</Project>

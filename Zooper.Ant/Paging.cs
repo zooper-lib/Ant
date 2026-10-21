@@ -41,13 +41,11 @@ namespace Zooper.Ant;
 /// </para>
 /// </remarks>
 /// <example>
+/// An ASP.NET Core host binds the query string with the companion package Zooper.Ant.AspNetCore, whose
+/// <c>PagingRequest.ToPaging(pager.Limits)</c> picks the factory from <c>?paging=</c> and refuses arguments of another
+/// kind. Any other caller (a message handler, a job) calls the factories directly:
 /// <code>
-/// Paging paging = request.Kind switch
-/// {
-///     "counted" =&gt; Paging.Counted(request.Page, request.Size, pager.Limits),
-///     "capped" =&gt; Paging.Capped(request.Cap, pager.Limits),
-///     _ =&gt; Paging.Continuable(request.Token, request.Size, pager.Limits)
-/// };
+/// Paging paging = Paging.Counted(message.Page, message.Size, pager.Limits);
 ///
 /// var page = await players.ToPageAsync(paging, order, scope, pager, ct);
 /// </code>
