@@ -85,6 +85,7 @@ jobs:
       matrix:
         project:
           - Zooper.Ant/Zooper.Ant.csproj
+          - Zooper.Ant.AspNetCore/Zooper.Ant.AspNetCore.csproj
 
     steps:
       - name: Checkout Repository

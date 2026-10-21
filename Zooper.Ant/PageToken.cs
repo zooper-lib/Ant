@@ -35,14 +35,15 @@ namespace Zooper.Ant;
 /// For hosts it binds and serialises as a plain string: <see cref="IParsable{TSelf}"/> lets ASP.NET Core minimal APIs
 /// bind <c>PageToken?</c> from a query string, <see cref="PageTokenJsonConverter"/> writes and reads the raw string, and
 /// <see cref="PageTokenTypeConverter"/> serves MVC model binding and other <see cref="TypeConverter"/> users. It is a
-/// plain struct rather than a value-object library type so consumers inherit no extra dependency.
+/// plain struct rather than a value-object library type so consumers inherit no extra dependency. Zooper.Ant.AspNetCore's
+/// <c>PagingRequest</c> binds it as the <c>pageToken</c> query parameter.
 /// </para>
 /// </remarks>
 /// <example>
 /// <code>
 /// // Minimal API: a malformed token is a 400 before the handler runs.
-/// app.MapGet("/players", (PageToken? token, int? size, PlayerQueries queries, Pager pager, CancellationToken ct) =&gt;
-///     queries.ListAsync(Paging.Continuable(token, size, pager.Limits), ct));
+/// app.MapGet("/players", (PageToken? pageToken, int? size, PlayerQueries queries, Pager pager, CancellationToken ct) =&gt;
+///     queries.ListAsync(Paging.Continuable(pageToken, size, pager.Limits), ct));
 ///
 /// // From any string, for example a message field:
 /// if (PageToken.TryParse(message.Continuation, out var token))

@@ -14,7 +14,7 @@ Every list endpoint needs paging, and every team writes it again: offsets that s
 
 A read is written once and serves three page kinds, chosen by the caller per request. Continuation is a keyset seek, never an offset, so it stays correct while rows are inserted and deleted, and costs the same on page 1000 as on page 2. Tokens are encrypted with ASP.NET Core Data Protection, bound to the read and its filters, and never expire. Any store can be paged: LINQ stores supply two methods, every other store implements one small interface.
 
-`Zooper.Ant` depends on `Microsoft.AspNetCore.DataProtection.Abstractions` and `Microsoft.Extensions.Options` only.
+`Zooper.Ant` depends on `Microsoft.AspNetCore.DataProtection.Abstractions` and `Microsoft.Extensions.Options` only. The companion package `Zooper.Ant.AspNetCore` adds the HTTP edge: query binding, 400 problem responses and the OpenAPI description of pages.
 
 ## Key Concepts
 
@@ -33,6 +33,7 @@ A read is written once and serves three page kinds, chosen by the caller per req
 
 ```bash
 dotnet add package Zooper.Ant
+dotnet add package Zooper.Ant.AspNetCore   # ASP.NET Core hosts: binding, problem responses, OpenAPI
 ```
 
 ## Getting Started
@@ -68,7 +69,7 @@ public sealed class PlayerQueries(PlayerStore store, Pager pager)
 The caller picks the kind:
 
 ```csharp
-await queries.ListAsync("red", Paging.Continuable(token: null, size: 20), ct);   // first page + next token
+await queries.ListAsync("red", Paging.Continuable(pageToken: null, size: 20), ct); // first page + next token
 await queries.ListAsync("red", Paging.Continuable(nextToken, size: 20), ct);     // the page after
 await queries.ListAsync("red", Paging.Counted(page: 3, size: 20), ct);           // page 3 of N, with the total
 await queries.ListAsync("red", Paging.Capped(cap: 5), ct);                       // top 5, and whether more matched
@@ -89,7 +90,7 @@ dotnet run --project Zooper.Ant.Example
      next token: ...ZVCLsuw0xZLyoILU (219 chars, encrypted, different every page)
 ```
 
-With `-- --serve` it serves the same reads over HTTP; `Zooper.Ant.Example.http` walks through them. See [`Zooper.Ant.Example/README.md`](Zooper.Ant.Example/README.md).
+With `-- --serve` it serves the same reads over HTTP through `Zooper.Ant.AspNetCore` (the `?paging=` parameters, 400 problem responses, `/openapi/v1.json`); `Zooper.Ant.Example.http` walks through them. See [`Zooper.Ant.Example/README.md`](Zooper.Ant.Example/README.md).
 
 ## Page Kinds
 
@@ -217,21 +218,44 @@ Data is live: a row whose ordering value changes during the traversal may be ski
 | `PagingException` | page below 1, depth beyond the limit, malformed token, counted kind on a store that cannot count |
 | `InvalidPageTokenException` | a token from another read, other arguments, another order, altered, or unreadable. Derives from `PagingException`. |
 
-Map one type to one response. In ASP.NET Core:
+Map one type to one response. An ASP.NET Core host gets that mapping from `Zooper.Ant.AspNetCore`, below.
+
+## Hosting in ASP.NET Core
+
+`Zooper.Ant.AspNetCore` is the HTTP edge, so no host writes it again. Every Ant host speaks the same five query parameters:
+
+| Parameter | Value | Kinds |
+|-----------|-------|-------|
+| `paging` | `continuable`, `counted` or `capped`, any case; absent means `continuable` | all |
+| `pageToken` | the previous page's `nextPageToken` | continuable |
+| `page` | one-based page number | counted |
+| `size` | page size, defaulted and clamped by the limits | continuable, counted |
+| `cap` | cap, defaulted and clamped like a size | capped |
+
+An argument of another kind (`?paging=capped&cap=5&page=2`) is refused, never ignored. An unknown `paging` value or a malformed `pageToken` is a 400 before the endpoint runs. The names are fixed: a host whose API already uses other names binds its own parameters and calls the `Paging` factories with `pager.Limits`.
+
+Bind `PagingRequest` beside your own filter and pass the host's limits:
 
 ```csharp
-public sealed class PagingExceptionHandler(IProblemDetailsService problemDetails) : IExceptionHandler
-{
-    public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken ct)
-    {
-        if (exception is not PagingException)
-            return false;
+app.MapGet("/players", ([AsParameters] PlayerFilter filter, [AsParameters] PagingRequest paging, PlayerQueries queries, Pager pager, CancellationToken ct) =>
+    queries.ListAsync(filter, paging.ToPaging(pager.Limits), ct));
 
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        return await problemDetails.TryWriteAsync(new() { HttpContext = context, Exception = exception });
-    }
-}
+// In an [ApiController]:
+public Task<Page<PlayerView>> List([FromQuery] PlayerFilter filter, [FromQuery] PagingRequest paging, CancellationToken ct) =>
+    queries.ListAsync(filter, paging.ToPaging(pager.Limits), ct);
 ```
+
+Two independent one-liners do the rest; the binding needs none:
+
+```csharp
+builder.Services.AddAntExceptionHandler();                               // PagingException → 400 problem response
+builder.Services.AddOpenApi(options => options.AddAntPageResponses());   // Page<T> → oneOf the three page shapes
+
+app.UseExceptionHandler();                                               // required, as for every IExceptionHandler
+app.MapOpenApi();
+```
+
+The problem's `type` is `urn:zooper:ant:invalid-page-token` for a refused token (a client restarts from the first page) and `urn:zooper:ant:invalid-paging` for every other refusal; the `detail` is the refusal's message. A host with its own error convention skips `AddAntExceptionHandler` and maps `PagingException` itself. Controllers need `[ApiController]`, which turns a failed parse into a 400; without it an unknown `paging` would bind as absent.
 
 ## Adding a Store
 
@@ -270,6 +294,9 @@ A store with its own cursors (Elasticsearch `search_after`, Cosmos DB continuati
 | Member | Purpose |
 |--------|---------|
 | `services.AddAnt(options => ...)` | Registers `Pager` and the token protector; `Limits`, `PurposeRoot` |
+| `services.AddAntExceptionHandler()` | `Zooper.Ant.AspNetCore`: paging refusals as 400 problem responses; needs `app.UseExceptionHandler()` |
+| `openApiOptions.AddAntPageResponses()` | `Zooper.Ant.AspNetCore`: `Page<T>` documented as `oneOf` the three page shapes |
+| `[AsParameters]` / `[FromQuery] PagingRequest` + `ToPaging(pager.Limits)` | `Zooper.Ant.AspNetCore`: the five query parameters as a `Paging` |
 | `Paging.Continuable(token, size, limits)` | First or next continuable page |
 | `Paging.Counted(page, size, limits)` | Page by number, with total |
 | `Paging.Capped(cap, limits)` | Top N, with truncation flag |

@@ -12,7 +12,7 @@ namespace Zooper.Ant.Sources;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <b>Role.</b> An order is the single statement of how a read is sorted. <see cref="QueryablePageSource{T}"/> hands
+/// Role. An order is the single statement of how a read is sorted. <see cref="QueryablePageSource{T}"/> hands
 /// it to <see cref="SeekExpressionBuilder"/>, which derives two things from the same keys: the ORDER BY applied to
 /// every page (<see cref="SeekExpressionBuilder.ApplyOrdering{T}"/>) and the "rows strictly after the last served row"
 /// predicate used to continue (<see cref="SeekExpressionBuilder.BuildSeek{T}"/>). Because neither is written by hand,
@@ -20,25 +20,25 @@ namespace Zooper.Ant.Sources;
 /// as a chain ending in a unique tie-breaker").
 /// </para>
 /// <para>
-/// <b>The tie-breaker.</b> The last key must be unique across the result set, typically the identifier. Without it,
+/// The tie-breaker. The last key must be unique across the result set, typically the identifier. Without it,
 /// rows that share every other key value have no fixed order, and a page boundary falling among them would skip or
 /// repeat rows. The order cannot verify uniqueness; declaring it is the caller's responsibility.
 /// </para>
 /// <para>
-/// <b>Keys.</b> Each key is a typed lambda over the item, a member access (<c>p =&gt; p.Rating</c>) or a computed
+/// Keys. Each key is a typed lambda over the item, a member access (<c>p =&gt; p.Rating</c>) or a computed
 /// expression the LINQ provider can translate. Its name and value type are inferred from the lambda, so renaming a
 /// property is a compile-time change and no string names exist. Directions may be mixed freely; each key seeks in its
 /// own direction.
 /// </para>
 /// <para>
-/// <b>Nulls.</b> A nullable key places nulls last in both directions unless declared with <c>nullsFirst: true</c>. A key
+/// Nulls. A nullable key places nulls last in both directions unless declared with <c>nullsFirst: true</c>. A key
 /// counts as nullable when its type is <see cref="Nullable{T}"/> (<c>int?</c>, <c>DateTime?</c>) or when it is a
 /// direct access to a reference-type property or field annotated as nullable (<c>string?</c> under nullable reference
 /// types). A computed reference-type key, or one without the annotation, is treated as never null; see
 /// <see cref="OrderKey{T}.IsNullable"/>.
 /// </para>
 /// <para>
-/// <b>Identity in tokens.</b> <see cref="OrderSignature"/> describes the chain. <see cref="Pager"/> folds it into the
+/// Identity in tokens. <see cref="OrderSignature"/> describes the chain. <see cref="Pager"/> folds it into the
 /// token binding through <see cref="PageScope.Bind"/>, so a token issued under one order is refused under another
 /// (spec <c>continuation-tokens</c>, "Changed ordering").
 /// </para>

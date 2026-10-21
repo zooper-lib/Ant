@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-10-20T08:43:07.211Z
-> Files: 28 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-10-21T08:56:41.565Z
+> Files: 29 tracked | Anatomy hits: 0 | Misses: 0
 
 > Project structure index. Auto-maintained by OpenWolf hooks and daemon.
 > Run `openwolf scan` to generate, or wait for the first Claude Code session.
@@ -13,6 +13,10 @@
 - `CLAUDE.md` — OpenWolf (~99 tok)
 - `paging-package-brief.md` — Paging Package Brief (~33492 tok)
 - `README.md` — Project documentation (~3279 tok)
+
+## .github/workflows/
+
+- `nuget.publish.yml` — CI: Build and Publish (~938 tok)
 
 ## Zooper.Ant.Example/
 

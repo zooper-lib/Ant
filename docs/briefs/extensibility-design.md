@@ -128,7 +128,7 @@ A native-cursor store (Dapr state query, DynamoDB, Elasticsearch) returns its ow
 
 ## Decision 10: Exceptions and the ProblemDetails type
 
-**Settled by standing delegation.** `PagingException` (refused argument) and `InvalidPageTokenException : PagingException` as in the brief. The AspNetCore package's opt-in `IExceptionHandler` answers 400 with RFC 9457 `ProblemDetails`; `type` defaults to `urn:zooper:ant:invalid-paging` and `urn:zooper:ant:invalid-page-token`, configurable. URNs because they are stable without binding the package to a domain the owner must keep serving. Resolves the brief's deferred "`ProblemDetails` type URI" question.
+**Settled by standing delegation.** `PagingException` (refused argument) and `InvalidPageTokenException : PagingException` as in the brief. The AspNetCore package's opt-in `IExceptionHandler` answers 400 with RFC 9457 `ProblemDetails`; `type` is `urn:zooper:ant:invalid-paging` or `urn:zooper:ant:invalid-page-token` (fixed; "configurable" superseded by `ant-aspnetcore-companion.md` decision 5). URNs because they are stable without binding the package to a domain the owner must keep serving. Resolves the brief's deferred "`ProblemDetails` type URI" question.
 
 ## Decision 11: No shipped contract suite (superseded 2026-10-20)
 
@@ -138,7 +138,7 @@ A native-cursor store (Dapr state query, DynamoDB, Elasticsearch) returns its ow
 
 ## Decision 12: Registration and options
 
-**Settled by standing delegation.** `services.AddAnt(options => { options.Limits = new PagingLimits(…); options.PurposeRoot = "…"; })` registers `Pager`, the Data Protection protector and validated `PagingLimits` (startup validation: `1 <= DefaultSize <= MaximumSize`, `MaximumDepth >= MaximumSize`). `services.AddAntAspNetCore(...)` adds the request binding with configurable query names, the OpenAPI `oneOf` transformer and the opt-in exception handler. Adapter packages need no registration beyond their `using`. The traversal helper is `pager.TraverseAsync(token => readPage(token), ct)` as in the brief.
+**Settled by standing delegation.** `services.AddAnt(options => { options.Limits = new PagingLimits(…); options.PurposeRoot = "…"; })` registers `Pager`, the Data Protection protector and validated `PagingLimits` (startup validation: `1 <= DefaultSize <= MaximumSize`, `MaximumDepth >= MaximumSize`). The AspNetCore package ships the request binding with fixed query names, the OpenAPI `oneOf` transformer and the opt-in exception handler (umbrella call and configurable names superseded by `ant-aspnetcore-companion.md` decisions 3 and 6). Adapter packages need no registration beyond their `using`. The traversal helper is `pager.TraverseAsync(token => readPage(token), ct)` as in the brief.
 
 ## Decision 13: First-release adapters
 

@@ -16,7 +16,7 @@ namespace Zooper.Ant.Example;
 /// <para>
 /// The output marks each line: <c>&gt;</c> is the call, <c>&lt;</c> what came back, <c>x</c> a refusal with the
 /// exception's type and message, <c>i</c> a note. Refusals are caught and printed so the tour can show them and carry on;
-/// in a web host <see cref="PagingExceptionHandler"/> turns them into 400 responses instead.
+/// in a web host Zooper.Ant.AspNetCore's <c>PagingExceptionHandler</c> turns them into 400 responses instead.
 /// </para>
 /// <para>
 /// Most chapters build <see cref="Paging"/> without limits, which applies <see cref="PagingLimits.Default"/>; they ask for

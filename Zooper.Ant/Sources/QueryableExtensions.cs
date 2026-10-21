@@ -12,18 +12,18 @@ namespace Zooper.Ant.Sources;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <b>Role.</b> This is the in-memory entry point and the shape every store adapter follows: a query-first terminal
+/// Role. This is the in-memory entry point and the shape every store adapter follows: a query-first terminal
 /// method, like <c>ToListAsync</c>, so paging never breaks a <c>Where</c> chain (design decision 3). Each call builds a
 /// <see cref="QueryablePageSource{T}"/> over <see cref="InMemoryQueryExecutor"/> and hands it to
 /// <see cref="Pager.ReadAsync{TItem}"/>, which serves the kind the <see cref="Paging"/> asks for.
 /// </para>
 /// <para>
-/// <b>Adapters.</b> Store adapter packages add their own <c>ToPageAsync</c> overloads, bound to their executors and
+/// Adapters. Store adapter packages add their own <c>ToPageAsync</c> overloads, bound to their executors and
 /// declared in their own namespaces. The consumer picks the store by the namespace it imports; the call site looks the
 /// same.
 /// </para>
 /// <para>
-/// <b>Timestamps.</b> Memory keeps every tick, so the source is created with a precision of one tick: there the stored
+/// Timestamps. Memory keeps every tick, so the source is created with a precision of one tick: there the stored
 /// value is the in-memory value. Truncating to microseconds, as a database source does, would make a row with
 /// sub-microsecond ticks sort after its own bookmark and be served twice.
 /// </para>

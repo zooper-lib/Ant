@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zooper.Ant.Tests", "Zooper.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zooper.Ant.Example", "Zooper.Ant.Example\Zooper.Ant.Example.csproj", "{227668F4-6F8C-4388-865F-4B9B3CE1BEAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zooper.Ant.AspNetCore", "Zooper.Ant.AspNetCore\Zooper.Ant.AspNetCore.csproj", "{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{227668F4-6F8C-4388-865F-4B9B3CE1BEAD}.Release|x64.Build.0 = Release|Any CPU
 		{227668F4-6F8C-4388-865F-4B9B3CE1BEAD}.Release|x86.ActiveCfg = Release|Any CPU
 		{227668F4-6F8C-4388-865F-4B9B3CE1BEAD}.Release|x86.Build.0 = Release|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Debug|x64.Build.0 = Debug|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Debug|x86.Build.0 = Debug|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Release|x64.ActiveCfg = Release|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Release|x64.Build.0 = Release|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Release|x86.ActiveCfg = Release|Any CPU
+		{224D1A18-D7D2-4A99-BE5B-2D56F6A0D8B6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

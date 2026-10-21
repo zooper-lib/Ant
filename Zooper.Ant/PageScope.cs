@@ -13,20 +13,20 @@ namespace Zooper.Ant;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <b>Why a scope.</b> A token carries a position in an ordering, such as "after rating 91, id 9". Presented to another
+/// Why a scope. A token carries a position in an ordering, such as "after rating 91, id 9". Presented to another
 /// read, or to the same read with another filter, that position would be applied to a different result set and serve a
 /// wrong page that looks right. Binding the token to the read and its arguments turns that into an
 /// <see cref="InvalidPageTokenException"/> instead (spec <c>continuation-tokens</c>).
 /// </para>
 /// <para>
-/// <b>What to put in it.</b> Every result-defining argument of the read: filters, identifier sets, search terms,
+/// What to put in it. Every result-defining argument of the read: filters, identifier sets, search terms,
 /// locations. Not the page size: it may change between pages. Not the ordering: <see cref="Pager"/> folds the source's
 /// <see cref="IPageSource{TItem}.OrderSignature"/> in through <see cref="Bind"/>. Pass scalars and records: values bind
 /// alike exactly when they serialise to the same JSON, so a value with unstable serialisation (a dictionary in insertion
 /// order) refuses tokens unexpectedly.
 /// </para>
 /// <para>
-/// <b>How it binds.</b> The paging system, not the read, computes the binding (spec <c>continuation-tokens</c>, "The
+/// How it binds. The paging system, not the read, computes the binding (spec <c>continuation-tokens</c>, "The
 /// service, not the read, binds a token to its arguments"). <see cref="Bind"/> serialises the values and the order
 /// signature with the pinned <see cref="CanonicalJson"/> options and hashes the result into a
 /// <see cref="BoundScope.Fingerprint"/>. The <see cref="ReadName"/> is not hashed: the

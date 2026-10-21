@@ -21,10 +21,14 @@ namespace Zooper.Ant;
 /// </para>
 /// <para>
 /// The message names the bound or argument refused and is safe to show to a caller. Zooper.Ant has no dependency on
-/// HTTP; the mapping to a response, such as a 400 problem response, belongs to the host.
+/// HTTP; the mapping to a response belongs to the host. An ASP.NET Core host gets it from the companion package
+/// Zooper.Ant.AspNetCore: <c>services.AddAntExceptionHandler()</c> answers every refusal with a 400 problem response
+/// whose <c>type</c> is <c>urn:zooper:ant:invalid-paging</c>, or <c>urn:zooper:ant:invalid-page-token</c> for an
+/// <see cref="InvalidPageTokenException"/>. Any other host maps it itself, as in the example.
 /// </para>
 /// </remarks>
 /// <example>
+/// A host without the companion package, mapping the refusal by hand:
 /// <code>
 /// try
 /// {

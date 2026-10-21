@@ -11,13 +11,13 @@ namespace Zooper.Ant.Tokens;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <b>Role.</b> <see cref="Pager"/> calls <see cref="Protect"/> when it issues the next token of a continuable page and
+/// Role. <see cref="Pager"/> calls <see cref="Protect"/> when it issues the next token of a continuable page and
 /// <see cref="Unprotect"/> when a caller returns one. The position is the source's own (<see cref="PagePosition"/>);
 /// the protector serialises it, never interprets it, and hands the values back as JSON for the source's
 /// <see cref="IPageSource{TItem}.ParsePosition"/> to read.
 /// </para>
 /// <para>
-/// <b>What an implementation must guarantee</b> (spec <c>continuation-tokens</c>):
+/// What an implementation must guarantee (spec <c>continuation-tokens</c>):
 /// </para>
 /// <list type="bullet">
 /// <item><description>The payload is encrypted and integrity-protected: a caller can neither read nor alter it.</description></item>
@@ -26,7 +26,7 @@ namespace Zooper.Ant.Tokens;
 /// <item><description>No lifetime: a token is never refused because of its age, and stays readable across restarts and between instances that share the keys.</description></item>
 /// </list>
 /// <para>
-/// <b>Default and replacement.</b> <c>services.AddAnt()</c> registers <see cref="DataProtectionPageTokenProtector"/>
+/// Default and replacement. <c>services.AddAnt()</c> registers <see cref="DataProtectionPageTokenProtector"/>
 /// with <c>TryAddSingleton</c>, so an implementation registered before <c>AddAnt</c> wins, for example an HMAC protector
 /// or one backed by a key-management service. Every read then issues and accepts tokens through it with no change to the
 /// reads.
