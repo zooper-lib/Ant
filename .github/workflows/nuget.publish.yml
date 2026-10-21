@@ -1,0 +1,109 @@
+name: Build and Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+      
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_VERSION: "10.x"
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      package_version: ${{ steps.set_package_version.outputs.package_version }}
+      is_release: ${{ steps.set_package_version.outputs.is_release }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Determine Package Version
+        id: set_package_version
+        run: |
+          VERSION=$(grep -oP '(?<=<Version>)[^<]+' Directory.Build.props)
+          if [ -z "$VERSION" ]; then
+            echo "Error: <Version> tag not found in Directory.Build.props."
+            exit 1
+          fi
+
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            # Release: use version from Directory.Build.props as-is
+            PACKAGE_VERSION="${VERSION}"
+            IS_RELEASE="true"
+          else
+            # Pre-release: append preview suffix
+            PACKAGE_VERSION="${VERSION}-preview.${GITHUB_RUN_NUMBER}"
+            IS_RELEASE="false"
+          fi
+
+          echo "Package Version: $PACKAGE_VERSION"
+          echo "package_version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
+          echo "is_release=${IS_RELEASE}" >> $GITHUB_OUTPUT
+
+      - name: Validate Semantic Versioning
+        run: |
+          VERSION="${{ steps.set_package_version.outputs.package_version }}"
+          # Match release (1.2.3) or pre-release (1.2.3-preview.42)
+          if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "Version '$VERSION' is valid."
+          else
+            echo "Error: Version '$VERSION' does not follow semantic versioning."
+            exit 1
+          fi
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --configuration Release --no-build
+
+  build-pack-publish:
+    needs: [setup, test]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - Zooper.Ant/Zooper.Ant.csproj
+          - Zooper.Ant.AspNetCore/Zooper.Ant.AspNetCore.csproj
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore "${{ matrix.project }}"
+
+      - name: Build
+        run: dotnet build "${{ matrix.project }}" --configuration Release --no-restore /p:PackageVersion=${{ needs.setup.outputs.package_version }}
+
+      - name: Pack
+        run: dotnet pack "${{ matrix.project }}" --configuration Release --no-build /p:PackageVersion=${{ needs.setup.outputs.package_version }} --output ./nupkg
+
+      - name: Publish
+        run: dotnet nuget push "./nupkg/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate

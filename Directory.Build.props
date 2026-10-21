@@ -1,0 +1,36 @@
+<Project>
+    <PropertyGroup>
+        <Authors>Daniel Martin</Authors>
+        <Company>Zooper</Company>
+        <Copyright>Copyright © Zooper $([System.DateTime]::Now.ToString('yyyy'))</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/zooper-lib/Ant</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/zooper-lib/Ant</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageTags>paging;pagination;keyset;cursor;continuation-token;linq;C#</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Description>Caller-selected paging for .NET: continuable, counted and capped pages over any store, with keyset continuation behind protected tokens.</Description>
+
+        <!-- Version information -->
+        <Version>1.0.0</Version>
+
+        <TargetFramework>net10.0</TargetFramework>
+
+        <!-- Source linking -->
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+        <!-- Use latest C# version -->
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)icon.png" Pack="true" PackagePath="\" />
+        <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+</Project>

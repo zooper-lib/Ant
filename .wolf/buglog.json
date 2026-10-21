@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "bugs": [
+    {
+      "id": "bug-001",
+      "date": "2026-10-20",
+      "error_message": "Contract suite expected order would fail a correct store that keeps microsecond timestamps (sub-microsecond pair tied in the store, ordered by tie-breaker, but the oracle compared full ticks)",
+      "file": "Zooper.Ant.Tests/Contract/PageSourceContractTests.cs",
+      "root_cause": "ContractOrder.Sort compared CreatedAt at tick precision, i.e. the in-memory store's semantics, not the store under test.",
+      "fix": "IPageSourceFixture.TimestampPrecision (default 1 microsecond); the oracle compares timestamps at it. In-memory fixture declares one tick. MyStoreContractTests (README skeleton) runs the suite over a microsecond store.",
+      "tags": [
+        "contract-suite",
+        "timestamps",
+        "oracle",
+        "precision"
+      ]
+    },
+    {
+      "id": "bug-002",
+      "date": "2026-10-20",
+      "error_message": "Testing with VSTest target is no longer supported by Microsoft.Testing.Platform on .NET 10 SDK",
+      "file": "global.json",
+      "root_cause": "xunit.v3 runs on Microsoft.Testing.Platform; .NET 10 dotnet test defaults to VSTest.",
+      "fix": "global.json test.runner = Microsoft.Testing.Platform; drop Microsoft.NET.Test.Sdk and xunit.runner.visualstudio from the test project.",
+      "tags": [
+        "xunit.v3",
+        "dotnet-test",
+        "net10",
+        "mtp"
+      ]
+    },
+    {
+      "error_message": "Wrong reference: PagingException should be BadHttpRequestException",
+      "file": "Zooper.Ant.Example/Players.cs",
+      "root_cause": "Used \"PagingException\" instead of \"BadHttpRequestException\"",
+      "fix": "Changed PagingException \u2192 BadHttpRequestException",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "cs"
+      ],
+      "status": "candidate",
+      "observed_worktree": "/mnt/data_hdd/Development/Projects/Zooper/Ant",
+      "id": "bug-003",
+      "timestamp": "2026-10-20T08:10:53.658Z",
+      "last_seen": "2026-10-20T08:10:53.658Z",
+      "occurrences": 1,
+      "related_bugs": []
+    },
+    {
+      "error_message": "Minimal API ?paging=counted returns 400; ?paging=Counted binds",
+      "file": "Zooper.Ant.AspNetCore/PagingKind.cs",
+      "root_cause": "Minimal APIs parse enum query values with case-sensitive Enum.TryParse against member names, so lower-case wire values never bind to PascalCase members.",
+      "fix": "PagingKind became a readonly record struct with IParsable (case-insensitive TryParse) plus a TypeConverter for MVC; a schema transformer in AddAntPageResponses restores the string enum in OpenAPI.",
+      "tags": [
+        "aspnetcore",
+        "minimal-api",
+        "enum",
+        "binding"
+      ],
+      "status": "confirmed",
+      "id": "bug-004",
+      "timestamp": "2026-10-21T12:00:00.000Z",
+      "last_seen": "2026-10-21T12:00:00.000Z",
+      "occurrences": 1,
+      "related_bugs": []
+    },
+    {
+      "error_message": "MVC [FromQuery] PagingRequest paging ignores ?paging=counted&page=2 (binds defaults)",
+      "file": "Zooper.Ant.AspNetCore/PagingRequest.cs",
+      "root_cause": "MVC uses the parameter name as model prefix whenever a query key equals it; ?paging= matched parameter 'paging', so properties were looked up as paging.paging, paging.page.",
+      "fix": "[Bind(Prefix = \"\")] on PagingRequest forces the empty prefix regardless of parameter name.",
+      "tags": [
+        "aspnetcore",
+        "mvc",
+        "model-binding",
+        "prefix"
+      ],
+      "status": "confirmed",
+      "id": "bug-005",
+      "timestamp": "2026-10-21T12:00:00.000Z",
+      "last_seen": "2026-10-21T12:00:00.000Z",
+      "occurrences": 1,
+      "related_bugs": []
+    },
+    {
+      "error_message": "CS9137 interceptors feature not enabled in Microsoft.AspNetCore.OpenApi.Generated",
+      "file": "Zooper.Ant.Tests/Zooper.Ant.Tests.csproj",
+      "root_cause": "Microsoft.AspNetCore.OpenApi's source generator flows through a ProjectReference but its build targets (which set InterceptorsNamespaces) do not.",
+      "fix": "Add InterceptorsNamespaces $(InterceptorsNamespaces);Microsoft.AspNetCore.OpenApi.Generated in in-repo consumers (Tests, Example); package nuspec keeps exclude=Build,Analyzers.",
+      "tags": [
+        "aspnetcore",
+        "openapi",
+        "source-generator",
+        "msbuild"
+      ],
+      "status": "confirmed",
+      "id": "bug-006",
+      "timestamp": "2026-10-21T12:00:00.000Z",
+      "last_seen": "2026-10-21T12:00:00.000Z",
+      "occurrences": 1,
+      "related_bugs": []
+    },
+    {
+      "error_message": "GetOrCreateSchemaAsync schemas inlined per operation, not shared components",
+      "file": "Zooper.Ant.AspNetCore/PageResponseTransformer.cs",
+      "root_cause": "OpenApiOperationTransformerContext.GetOrCreateSchemaAsync returns inline schemas and does not register components.",
+      "fix": "Read schema.Metadata[\"x-schema-id\"], document.AddComponent(id, schema) once, return new OpenApiSchemaReference(id, document).",
+      "tags": [
+        "aspnetcore",
+        "openapi",
+        "schema"
+      ],
+      "status": "confirmed",
+      "id": "bug-007",
+      "timestamp": "2026-10-21T12:00:00.000Z",
+      "last_seen": "2026-10-21T12:00:00.000Z",
+      "occurrences": 1,
+      "related_bugs": []
+    }
+  ],
+  "applied_observations": {
+    "7ae0b328-e546-4b23-8348-703e7345488e": true
+  },
+  "next_id": 8
+}
